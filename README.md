@@ -15,13 +15,13 @@ Public IP Address: 52.37.68.228
  - Create a new development environment
 
  - Get and download the private key from [Udacity account](https://www.udacity.com/account#!/development_environment)
- - Move the private key file into the folder ~/.ssh
+ - Move the private key file into the folder ~/.ssh<br>
  `mv ~/Downloads/udacity_key.rsa ~/.ssh/`
 
  - Open terminal and set a file permission<br>
  `chmod 600 ~/.ssh/udacity_key.rsa`
 
- - SSH into server using the private key
+ - SSH into server using the private key<br>
  `ssh -i ~/.ssh/udacity_key.rsa root@52.37.68.228`<br><br>
 
 2. Create a new user and grant this user sudo permissions.
@@ -43,7 +43,7 @@ Public IP Address: 52.37.68.228
  `sudo apt-get upgrade`<br>
  `sudo apt-get autoremove`<br>
 
- Configure ssh authentification<br>
+4. Configure ssh authentification<br>
  - Exit from ssh<br>
  `exit`<br>
 
@@ -74,13 +74,13 @@ Public IP Address: 52.37.68.228
  - Connect as grader into server using the authentification key<br>
  `ssh -i ~/.ssh/authkey grader@52.37.68.228`<br><br>
  
-4. Configure the local timezone to UTC.
+5. Configure the local timezone to UTC.
  - Open the timezone selection dialog<br>
  `sudo dpkg-reconfigure tzdata`<br>
  Select `None of the above`<br>
  Select `UTC`<br><br>
  
-5. Change the SSH port from 22 to 2200 and secure server by disabling root login.
+6. Change the SSH port from 22 to 2200 and secure server by disabling root login.
  - Open ssh config file<br>
  `sudo nano /etc/ssh/sshd_config`<br>
 
@@ -91,7 +91,7 @@ Public IP Address: 52.37.68.228
  - Reload SSH<br>
 `sudo service ssh restart`<br><br>
  
-6. Configure the Uncomplicated Firewall (UFW).<br>
+7. Configure the Uncomplicated Firewall (UFW).<br>
  - Block all incoming traffic and allow all outgoing traffic<br>
  `sudo ufw default deny incoming`<br>
  `sudo ufw default allow outgoing`<br>
@@ -104,7 +104,7 @@ Public IP Address: 52.37.68.228
  - Enable firewall<br>
  `sudo ufw enable`<br><br>
  
- 7. Install and configure Apache to serve a Python mod_wsgi application.<br>
+8. Install and configure Apache to serve a Python mod_wsgi application.<br>
  - Install Apache web server<br>
  `sudo apt-get install apache2`<br>
 
@@ -114,7 +114,7 @@ Public IP Address: 52.37.68.228
  - Restart the Apache server<br>
  `sudo service apache2 restart`<br>
  
- Configure a Flask Application on the server<br>
+9. Configure a Flask Application on the server<br>
  - Create new directories for the app<br>
  `sudo mkdir /var/www/FlaskApp`<br>
  `sudo mkdir /var/www/FlaskApp/catalog`<br>
@@ -130,37 +130,40 @@ Public IP Address: 52.37.68.228
 
  - Paste in the following code for testing purpose<br>
 
- ```from flask import Flask <br>
+ ```
+ from flask import Flask <br>
  app = Flask(__name__)  
  @app.route("/")  
  def hello():  
  return "It works!!"  
  if __name__ == "__main__":  
- app.run()```
+ app.run()
+```
 
- - Install a virtual environment
- `sudo apt-get install python-pip`
- `sudo pip install virtualenv`
+ - Install a virtual environment<br>
+ `sudo apt-get install python-pip`<br>
+ `sudo pip install virtualenv`<br>
 
- - Create a new virtual environment and activate it
- `sudo virtualenv venv`
- `source venv/bin/activate`
+ - Create a new virtual environment and activate it<br>
+ `sudo virtualenv venv`<br>
+ `source venv/bin/activate`<br>
 
- - Install Flask in (venv)
- `pip install Flask`
+ - Install Flask in (venv)<br>
+ `pip install Flask`<br>
 
- - Run app
- `python __init__.py`
+ - Run app<br>
+ `python __init__.py`<br>
 
- - Deactivate the environment
- `deactivate`
+ - Deactivate the environment<br>
+ `deactivate`<br>
  
- Configure and Enable a New Virtual Host
- - Create app congig file
- `sudo nano /etc/apache2/sites-available/catalog.conf`
+10. Configure and Enable a New Virtual Host<br>
+ - Create app congig file<br>
+ `sudo nano /etc/apache2/sites-available/catalog.conf`<br>
 
- - Add the following code into catalog.conf
- ```<VirtualHost *:80>
+ - Add the following code into catalog.conf<br>
+ ```
+ <VirtualHost *:80>
     ServerName 52.37.68.228
     ServerAdmin admin@52.37.68.228
     WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
@@ -176,29 +179,31 @@ Public IP Address: 52.37.68.228
     ErrorLog ${APACHE_LOG_DIR}/error.log
     LogLevel warn
     CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>```
+</VirtualHost>
+```
+<br>
+- Enable the virtual host<br>
+`sudo a2ensite catalog`<br>
 
-- Enable the virtual host
-`sudo a2ensite catalog`
+- Create the .wsgi File<br>
+`sudo nano /var/www/FlaskApp/flaskapp.wsgi`<br>
 
-- Create the .wsgi File
-`sudo nano /var/www/FlaskApp/flaskapp.wsgi`
-
-- Add the following code into flaskapp.wsgi
- ```#!/usr/bin/python
+- Add the following code into flaskapp.wsgi<br>
+ ```
+ #!/usr/bin/python<
  import sys
  import logging
  logging.basicConfig(stream=sys.stderr)
  sys.path.insert(0,"/var/www/FlaskApp/")
 
  from catalog import app as application
- application.secret_key = 'Add your secret key'```
-
+ application.secret_key = 'Add your secret key'
+ ```
 
  - Restart Apache<br>
  `sudo service apache2 restart<br>` 
  
- 8. Install and configure PostgreSQL<br>
+ 11. Install and configure PostgreSQL<br>
  - Activate the virtual environment (venv)<br>
  `cd /var/www/FlaskApp/catalog`<br>
  `source venv/bin/activate`<br>
@@ -237,7 +242,7 @@ Public IP Address: 52.37.68.228
  `\q`<br>
  `exit`<br>
  
- 9. Install git, clone and set up [Catalog App project](https://github.com/michaelbretagne/beer_catalog).
+ 12. Install git, clone and set up [Catalog App project](https://github.com/michaelbretagne/beer_catalog).
  - Install Git<br>
  `sudo apt-get install git<br>`
 
@@ -257,7 +262,7 @@ Public IP Address: 52.37.68.228
  - Rename the main python file<br>
  `mv catalog/application.py catalog/__init__.py<br>`
  
- Modify catalog app to allow OAuth login and postgreSQL to work properly<br>
+ 13. Modify catalog app to allow OAuth login and postgreSQL to work properly<br>
  - Modify code to match the following code into datasetup.py, brewery_populate.py and __init__.py<br>
  `engine = create_engine("postgresql://catalog:password_db@localhost/catalog")`<br>
 
