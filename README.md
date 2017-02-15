@@ -1,9 +1,9 @@
 # Linux Web Server
 
-This application was created as my submission for the project 7 of Udacity's Full Stack NanoDegree program.
+This application was created as my submission for the **project 7** of [Udacity's Full Stack NanoDegree program](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004).
 
 ## Project Description:
-Installation of a Linux server and prepare it to host web applications
+Installation of a Linux server and prepare it to host web applications. 
 
 ## Development Environment Information
 Public IP Address: 52.37.68.228
@@ -181,14 +181,13 @@ Public IP Address: 52.37.68.228
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
-<br>
-- Enable the virtual host<br>
-`sudo a2ensite catalog`<br>
+ - Enable the virtual host<br>
+ `sudo a2ensite catalog`<br>
 
-- Create the .wsgi File<br>
+ - Create the .wsgi File<br>
 `sudo nano /var/www/FlaskApp/flaskapp.wsgi`<br>
 
-- Add the following code into flaskapp.wsgi<br>
+ - Add the following code into flaskapp.wsgi<br>
  ```
  #!/usr/bin/python<
  import sys
@@ -226,25 +225,25 @@ Public IP Address: 52.37.68.228
  `CREATE USER catalog WITH PASSWORD 'password_db';`<br>
 
  - Allow the user to create tables<br>
- `ALTER USER catalog CREATEDB;<br>`
+ `ALTER USER catalog CREATEDB;`<br>
 
  - Create database<br>
  `CREATE DATABASE catalog WITH OWNER catalog;`<br>
 
- - Switch to the user catalog and revoke all right<br>
+ - Switch to the user catalog and revoke all rights<br>
  `\c catalog`<br>
  `REVOKE ALL ON SCHEMA public FROM public;`<br>
 
  - Grant access to the user catalog<br>
  `GRANT ALL ON SCHEMA public TO catalog;`<br>
 
- - Exit PSQl<br>
+ - Exit PSQL<br>
  `\q`<br>
  `exit`<br>
  
- 12. Install git, clone and set up [Catalog App project](https://github.com/michaelbretagne/beer_catalog).
+12. Install git, clone and set up [Catalog App project](https://github.com/michaelbretagne/beer_catalog).
  - Install Git<br>
- `sudo apt-get install git<br>`
+ `sudo apt-get install git`<br>
 
  - Clone [Catalog App project](https://github.com/michaelbretagne/beer_catalog)<br>
  `cd /var/www/FlaskApp/`<br>
@@ -260,13 +259,13 @@ Public IP Address: 52.37.68.228
  `mv beer_catalog catalog`<br>
 
  - Rename the main python file<br>
- `mv catalog/application.py catalog/__init__.py<br>`
+ `mv catalog/application.py catalog/__init__.py`<br>
  
- 13. Modify catalog app to allow OAuth login and postgreSQL to work properly<br>
+13. Modify catalog app to allow OAuth login and postgreSQL to work properly<br>
  - Modify code to match the following code into datasetup.py, brewery_populate.py and __init__.py<br>
  `engine = create_engine("postgresql://catalog:password_db@localhost/catalog")`<br>
 
- - In the [Google Developer Console](https://console.developers.google.com/project), modify Authorized redirect URIs credential informations under API Manager<br>
+ - In the [Google Developer Console]cat c(https://console.developers.google.com/project), modify Authorized redirect URIs credential informations under API Manager<br>
  `http://ec2-52-37-68-228.us-west-2.compute.amazonaws.com/oauth2callback`<br>
 
  - In the [Facebook Developer site](https://developers.facebook.com/apps/), modify OAuth redirect URIs setting under Facebook Login<br>
@@ -274,13 +273,73 @@ Public IP Address: 52.37.68.228
 
  - Add the client secrets and edit the filepaths<br>
  Into /var/www/FlaskApp/catalog/__init__.py change<br>
- `CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']`<br>
-    to<br>
- `CLIENT_ID = json.loads(
-    open('/var/www/FlaskApp/catalog/client_secrets.json', 'r').read())['web']['client_id']`<br>
-    and also change<br>
- `app_id = json.loads(open('fb_client_secrets.json','r').read())['web']['app_id']`<br>
- `app_secret = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_secret']`<br>
- to<br>
- `app_id = json.loads(open('/var/www/FlaskApp/catalog/fb_client_secrets.json','r').read())['web']['app_id']`<br>
- `app_secret = json.loads(open('/var/www/FlaskApp/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']`<br>
+ ```
+ CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']
+ 
+ to
+ 
+ CLIENT_ID = json.loads(
+    open('/var/www/FlaskApp/catalog/client_secrets.json', 'r').read())['web']['client_id']
+ ```
+ and also change
+ ```
+ app_id = json.loads(open('fb_client_secrets.json','r').read())['web']['app_id']
+ `app_secret = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+ 
+ to
+ 
+ app_id = json.loads(open('/var/www/FlaskApp/catalog/fb_client_secrets.json','r').read())['web']['app_id']
+ app_secret = json.loads(open('/var/www/FlaskApp/catalog/fb_client_secrets.json', 'r').read())['web']['app_secret']
+ ```
+ 
+## Extra features that are not required in the nanodegree project
+ 
+1. Simplify SSH access<br>
+ [Source](http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/)<br>
+ 
+ - Exit from ssh<br>
+ `exit`<br>
+ - Create a ssh config file<br>
+ `vi ~/.ssh/config`<br>
+ - Add following code into the config file and save it<br>
+ ```
+ Host dev
+     User grader
+     Hostname 52.37.68.228
+     Identityfile ~/.ssh/authkey
+     Port 2200
+ ```
+ - Connect to your server using the simplified ssh access<br>
+ `ssh dev`<br>
+ 
+2. Protect SSH with Fail2Ban<br>
+ - Install Fail2Ban package<br>
+ `sudo apt-get install fail2ban`<br>
+ - Copy the default config file to create a new file called jail.local<br>
+ `sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local`<br>
+ - Open the new file and make the changes bellow<br>
+ `sudo nano /etc/fail2ban/jail.conf`<br>
+ ``` 
+ destemail = michael.donal@gmail.com
+ action = %(action_mwl)s
+ Under [ssh] change [port = ssh] to [port = 2200]
+ ```
+ - Allow the server to automatically set up the firewall rules at boot
+ `sudo apt-get install sendmail iptables-persistent`
+ - Stop the fail2ban service
+ `sudo service fail2ban stop`
+ - Establish a Base Firewall
+ ```
+ sudo iptables -A INPUT -i lo -j ACCEPT
+ sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+ sudo iptables -A INPUT -p tcp --dport 2200 -j ACCEPT
+ sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+ sudo iptables -A INPUT -p udp --dport 123 -j ACCEPT
+ sudo iptables -A INPUT -j DROP
+ ```
+ - Check the current firewall rules 
+ `sudo iptables -S`
+ - Save the firewalls
+ `sudo dpkg-reconfigure iptables-persistent`
+ - Restart Fail2ban
+ `sudo service fail2ban start`
