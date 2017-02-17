@@ -6,8 +6,18 @@ This application was created as my submission for the **project 7** of [Udacity'
 Installation of a Linux server and prepare it to host web applications. 
 
 ## Development Environment Information
- Static IP Address: 34.200.75.251
+ Static IP Address: 34.200.75.251<br>
  Host name: http://ec2-34-200-75-251.compute-1.amazonaws.com/
+ 
+ ## Sources
+  [Configuring Linux Web Servers](https://www.udacity.com/course/configuring-linux-web-servers--ud299)  course on Udacity<br>
+  [Udacity forum](https://discussions.udacity.com/)<br>
+  [Apache2 documentation](https://doc.ubuntu-fr.org/apache2)
+  [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps): Deploy Flask App<br>
+  [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04): Protect ssh with Fail2Ban<br>
+  [Simplify SSH access](http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/)<br>
+  [Glances](https://github.com/nicolargo/glances)<br>
+  [StackOverFlow](http://stackoverflow.com/)<br>
 
 ## Steps accomplished
 
@@ -48,7 +58,7 @@ Installation of a Linux server and prepare it to host web applications.
  - Update and upgrade packages<br>
  `sudo apt-get update`<br>
  `sudo apt-get upgrade`<br>
- `sudo apt-get autoremove`<br>
+ `sudo apt-get autoremove`<br><br>
 
 4. Configure ssh authentification<br>
  - Exit from grader<br>
@@ -122,8 +132,7 @@ Installation of a Linux server and prepare it to host web applications.
  
  - Check the ssh connection<br>
  `exit`<br>
- `ssh -i ~/.ssh/id_rsa grader@34.200.75.251 -p 2200`
- 
+ `ssh -i ~/.ssh/id_rsa grader@34.200.75.251 -p 2200`<br><br>
  
 8. Install and configure Apache to serve a Python mod_wsgi application.<br>
  - Install Apache web server<br>
@@ -164,8 +173,8 @@ Installation of a Linux server and prepare it to host web applications.
  `sudo nano /etc/apache2/sites-available/catalog.conf`<br>
 
  - Add the following code into catalog.conf<br>
-```
-<VirtualHost *:80>
+ ```
+ <VirtualHost *:80>
     ServerName 34.200.75.251
     ServerAdmin admin@34.200.75.251
     WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
@@ -181,8 +190,8 @@ Installation of a Linux server and prepare it to host web applications.
     ErrorLog ${APACHE_LOG_DIR}/error.log
     LogLevel warn
     CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
+ </VirtualHost>
+ ```
  - Enable the virtual host<br>
  `sudo a2dissite 000-default`<br>
  `sudo a2ensite catalog`<br>
@@ -191,21 +200,21 @@ Installation of a Linux server and prepare it to host web applications.
 `sudo nano /var/www/FlaskApp/flaskapp.wsgi`<br>
 
  - Add the following code into flaskapp.wsgi<br>
-```
-#!/usr/bin/python<
-import sys
-import logging
-logging.basicConfig(stream=sys.stderr)
-sys.path.insert(0,"/var/www/FlaskApp/")
+ ```
+ #!/usr/bin/python<
+ import sys
+ import logging
+ logging.basicConfig(stream=sys.stderr)
+ sys.path.insert(0,"/var/www/FlaskApp/")
 
-from catalog import app as application
-application.secret_key = 'Add your secret key'
-```
+ from catalog import app as application
+ application.secret_key = 'Add your secret key'
+ ```
  - Restart Apache<br>
  `sudo service apache2 restart`<br><br> 
  
  
- 11. Configure the catalog Flask Application on the server<br>
+11. Configure the catalog Flask Application on the server<br>
  - Move into catalog directory<br>
  `cd /var/www/FlaskApp/catalog`<br>
 
@@ -264,7 +273,6 @@ application.secret_key = 'Add your secret key'
  - Deactivate the environment<br>
  `deactivate`<br><br>
  
- 
 12. Modify catalog app to allow OAuth login and postgreSQL to work properly<br>
  - Modify code to match the following code into datasetup.py, brewery_populate.py and __init__.py<br>
  `engine = create_engine("postgresql://catalog:password_db@localhost/catalog")`<br>
@@ -312,18 +320,18 @@ application.secret_key = 'Add your secret key'
  - Create a ssh config file<br>
  `vi ~/.ssh/config`<br>
  - Add following code into the config file and save it<br>
-```
-Host dev
-    User grader
-    Hostname 34.200.75.251
-    Identityfile ~/.ssh/id_rsa
-    Port 2200
-```
+ ```
+ Host dev
+     User grader
+     Hostname 34.200.75.251
+     Identityfile ~/.ssh/id_rsa
+     Port 2200
+ ```
  - Connect to your server using the simplified ssh access<br>
  `ssh dev`<br><br>
  
 2. Protect SSH with Fail2Ban<br>
-[Source](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04)
+ [Source](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04)
  - Install Fail2Ban package<br>
  `sudo apt-get install fail2ban`<br>
  - Copy the default config file to create a new file called jail.local<br>
