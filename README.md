@@ -9,15 +9,15 @@ Installation of a Linux server and prepare it to host web applications.
  Static IP Address: 34.200.75.251<br>
  Host name: http://ec2-34-200-75-251.compute-1.amazonaws.com/
  
- ## Sources
-  [Configuring Linux Web Servers](https://www.udacity.com/course/configuring-linux-web-servers--ud299)  course on Udacity<br>
-  [Udacity forum](https://discussions.udacity.com/)<br>
-  [Apache2 documentation](https://doc.ubuntu-fr.org/apache2)
-  [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps): Deploy Flask App<br>
-  [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04): Protect ssh with Fail2Ban<br>
-  [Simplify SSH access](http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/)<br>
-  [Glances](https://github.com/nicolargo/glances)<br>
-  [StackOverFlow](http://stackoverflow.com/)<br>
+## Sources
+ - [Configuring Linux Web Servers](https://www.udacity.com/course/configuring-linux-web-servers--ud299)  course on Udacity<br>
+ - [Udacity forum](https://discussions.udacity.com/)<br>
+ - [Apache2 documentation](https://doc.ubuntu-fr.org/apache2)<br>
+ - [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps): Deploy Flask App<br>
+ - [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-ubuntu-14-04): Protect ssh with Fail2Ban<
+ - [Simplify SSH access](http://nerderati.com/2011/03/17/simplify-your-life-with-an-ssh-config-file/)<br>
+ - [Glances](https://github.com/nicolargo/glances)<br>
+ - [StackOverFlow](http://stackoverflow.com/)<br>
 
 ## Steps accomplished
 
